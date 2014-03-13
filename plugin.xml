@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="cordova-plugin-clear-data" version="0.0.2"
+        xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <name>Cordova Clear Data</name>
+    <keywords>cordova,webview,cache,clear,android,ios</keywords>
+    <description>Cordova plugin to clear locally persistent user data on Android and iOS.</description>
+
+    <repo>https://github.com/dpa99c/cordova-plugin-clear-data.git</repo>
+    <issue>https://github.com/dpa99c/cordova-plugin-clear-data/issues</issue>
+    <author email="dave@workingedge.co.uk" href="http://www.workingedge.co.uk">Dave Alden</author>
+
+    <license>MIT</license>
+
+    <platform name="android">
+
+        <js-module src="www/ClearData.js" name="ClearData">
+            <clobbers target="ClearData" />
+        </js-module>
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="ClearData" >
+                <param name="android-package" value="cordova.plugin.ClearData"/>
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/ClearData.java" target-dir="src/cordova/plugin" />
+
+    </platform>
+
+    <platform name="ios">
+
+        <js-module src="www/ClearData.js" name="ClearData">
+            <clobbers target="ClearData" />
+        </js-module>
+
+        <config-file target="config.xml" parent="/*">
+            <feature name="ClearData">
+                <param name="ios-package" value="ClearData" />
+            </feature>
+        </config-file>
+
+        <header-file src="src/ios/ClearData.h" />
+        <source-file src="src/ios/ClearData.m" />
+
+    </platform>
+
+</plugin>

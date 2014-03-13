@@ -1,0 +1,36 @@
+{
+    "name": "cordova-plugin-clear-data",
+    "version": "0.0.2",
+    "author": {
+        "name": "Dave Alden",
+        "email": "dave@workingedge.co.uk",
+        "url": "http://www.workingedge.co.uk"
+    },
+    "homepage": "https://github.com/dpa99c/cordova-plugin-clear-data",
+    "description": "Cordova plugin to clear locally persistent user data on Android and iOS.",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dpa99c/cordova-plugin-clear-data.git"
+    },
+    "bugs": {
+        "url": "https://github.com/dpa99c/cordova-plugin-clear-data/issues"
+    },
+    "keywords": [
+        "cordova",
+        "webview",
+        "cache",
+        "clear",
+        "ios",
+        "android",
+        "cordova-ios",
+        "cordova-android"
+    ],
+    "cordova": {
+        "id": "cordova-plugin-clear-data",
+        "platforms": [
+            "ios",
+            "android"
+        ]
+    }
+}
