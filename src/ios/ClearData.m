@@ -33,30 +33,42 @@
     @try {
         self.command = command;
 
-        [self.commandDelegate runInBackground:^{
-            
-            [[NSURLCache sharedURLCache] removeAllCachedResponses];
-            
-            if ([self usingWKWebView]) {
+        [[NSURLCache sharedURLCache] removeAllCachedResponses];
+        
+        if ([self usingWKWebView]) {
 #if defined(__IPHONE_9_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_9_0
-                NSSet* dataTypes = [NSSet setWithArray:@[
-                    WKWebsiteDataTypeDiskCache,
-                    WKWebsiteDataTypeOfflineWebApplicationCache,
-                    WKWebsiteDataTypeMemoryCache
-                ]];
-                [self clearWKWebViewData:dataTypes success:^()
-                 {
-                     [self sendPluginSuccess];
-                 }
-                 ];
+            NSSet* dataTypes = [NSSet setWithArray:@[
+                WKWebsiteDataTypeDiskCache,
+                WKWebsiteDataTypeOfflineWebApplicationCache,
+                WKWebsiteDataTypeMemoryCache
+            ]];
+            [self clearWKWebViewData:dataTypes success:^()
+             {
+                 [self sendPluginSuccess];
+             }
+             ];
 #endif
-            }else{
-                [self sendPluginSuccess];
-            }
-        }];
+        }else{
+            [self sendPluginSuccess];
+        }
+
     }@catch (NSException *exception) {
         [self handleException:exception];
     }
+}
+
+- (void)clearWKWebViewData:(NSSet*)dataTypes
+                   success:(void (^)())successBlock
+{
+#if defined(__IPHONE_9_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_9_0
+    [[WKWebsiteDataStore defaultDataStore] removeDataOfTypes:dataTypes modifiedSince:[NSDate dateWithTimeIntervalSince1970:0] completionHandler:^{
+        @try {
+            successBlock();
+        }@catch (NSException *exception) {
+            [self handleException:exception];
+        }
+    }];
+#endif
 }
 
 
@@ -66,7 +78,6 @@
 }
                                
 - (void)sendPluginError:(NSString*)message{
-  [self logError:message];
    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                                messageAsString:[message stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]];
    [self.commandDelegate sendPluginResult:result callbackId:self.command.callbackId];
