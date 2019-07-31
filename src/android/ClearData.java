@@ -19,7 +19,7 @@
 */
 
 package cordova.plugin;
-
+import android.os.Build.*;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
@@ -70,7 +70,12 @@ public class ClearData extends CordovaPlugin
         cordova.getActivity().runOnUiThread(new Runnable() {
             public void run() {
                 try {
-                    self.webView.clearCache();
+                    if (VERSION_CODES.KITKAT <= VERSION.SDK_INT) {
+                        ((ActivityManager)context.getSystemService(ACTIVITY_SERVICE))
+                                .clearApplicationUserData(); // note: it has a return value!
+                    }else {
+                        self.webView.clearCache();
+                    }
                     sendPluginSuccess();
                 } catch (Exception e) {
                     handleException(e);
